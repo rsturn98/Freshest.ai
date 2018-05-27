@@ -20,9 +20,9 @@ def getStorageDesc(classId):
         return database[str(classId)]['storageDesc']
     return ''
 
-def getImagePath(classId):
+def getImagePath(classId, index):
     if str(classId) in database:
-        return database[str(classId)]['image']
+        return database[str(classId)]['image' + str(index)]
     return ''
 
 camera = cv2.VideoCapture(0)
@@ -33,6 +33,8 @@ screenHeight = 600
 pygame.init()
 pygame.display.set_caption("Freshest.AI")
 screen = pygame.display.set_mode([screenWidth,screenHeight])
+
+index = 0;
 
 with tf.gfile.Open('frozen_inference_graph.pb', 'rb') as f:
     graph_def = tf.GraphDef()
@@ -80,7 +82,7 @@ with tf.Session() as sess:
                     cv2.rectangle(inp, (int(x), int(y)), (int(right), int(bottom)), (125, 255, 51), thickness=1)
 
                     if (len(group) == 0):
-                        image = pygame.image.load(getImagePath(classId))
+                        image = pygame.image.load(getImagePath(classId, index+1))
                         sprite = pygame.sprite.Sprite()
                         sprite.image = image
                         sprite.rect = image.get_rect()
@@ -105,6 +107,8 @@ with tf.Session() as sess:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     sys.exit(0)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    index = (index + 1) % 4
 
     except KeyboardInterrupt:
         pygame.quit()

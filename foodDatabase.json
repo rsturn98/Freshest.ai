@@ -1,17 +1,23 @@
 {
     "53": {
         "name": "Apple",
-        "image": "images/apple_1.png",
-        "image2": "images/apple_2.png"
+        "image1": "images/apple_1.png",
+        "image2": "images/apple_1.png",
+        "image3": "images/apple_1.png",
+        "image4": "images/apple_1.png"
     },
     "52": {
         "name": "Banana",
-        "image": "images/banana_1.png",
-        "image2": "images/banana_2.png"
+        "image1": "images/banana_1.png",
+        "image2": "images/banana_1.png",
+        "image3": "images/banana_1.png",
+        "image4": "images/banana_1.png"
     },
     "56": {
         "name": "Broccoli",
-        "image": "images/broccoli_1.png",
-        "image2": "images/broccoli_2.png"
+        "image1": "images/broccoli_1.png",
+        "image2": "images/broccoli_2.png",
+        "image3": "images/broccoli_3.png",
+        "image4": "images/broccoli_4.png"
     }
 }
