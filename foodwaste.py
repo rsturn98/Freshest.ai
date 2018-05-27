@@ -37,6 +37,9 @@ lastUIDisplayTime = 0
 lastClassId = -1
 currentUI = None
 
+lastPosX = 0
+lastPosY = 0
+
  # Load Tensorflow model
 with tf.gfile.Open('frozen_inference_graph.pb', 'rb') as f:
     graph_def = tf.GraphDef()
@@ -115,11 +118,17 @@ with tf.Session() as sess:
                         currentUI.image = image
                         currentUI.rect = image.get_rect()
     
+                        lastPosX = x
+                        lastPosY = y
+
                         group.add(currentUI)
                         lastClassId = classId
 
-                    currentUI.rect.x = max(0, min(x, screenWidth - currentUI.rect.width))
-                    currentUI.rect.y = max(0, min(y, screenHeight - currentUI.rect.height))
+                    #clamp and smooth position
+                    currentUI.rect.x = max(0, min(x, screenWidth - currentUI.rect.width)) * 0.5 + lastPosX * 0.5
+                    currentUI.rect.y = max(0, min(y, screenHeight - currentUI.rect.height)) * 0.5 + lastPosY * 0.5
+                    lastPosX = currentUI.rect.x
+                    lastPosY = currentUI.rect.y
                     group.update()
 
                     lastUIDisplayTime = time.time()
