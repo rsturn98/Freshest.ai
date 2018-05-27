@@ -6,6 +6,7 @@ import tensorflow as tf
 import sys
 import json
 from pprint import pprint
+import time
 
 with open('foodDatabase.json') as f:
     database = json.load(f)
@@ -32,6 +33,9 @@ screen = pygame.display.set_mode([screenWidth,screenHeight])
 indexUI = 0;
 font = cv2.FONT_HERSHEY_SIMPLEX
 
+lastUIDisplayTime = 0
+currentUI = None
+
  # Load Tensorflow model
 with tf.gfile.Open('frozen_inference_graph.pb', 'rb') as f:
     graph_def = tf.GraphDef()
@@ -44,8 +48,10 @@ with tf.Session() as sess:
     group = pygame.sprite.Group()
     try:
         while True:
-            group.empty();
-            group.add();
+
+            if (time.time() - lastUIDisplayTime > 0.5):
+                group.empty();
+                currentUI = None
 
             ret, frame = camera.read()
 
@@ -83,6 +89,7 @@ with tf.Session() as sess:
                         break
             
             # Display bounding box and UI
+            first = True
             for i in filteredIndex:
 
                 classId = int(out[3][0][i])
@@ -94,17 +101,25 @@ with tf.Session() as sess:
                 right = bbox[3] * cols
                 bottom = bbox[2] * rows
                 cv2.rectangle(inp, (int(x), int(y)), (int(right), int(bottom)), (125, 255, 51), thickness=1)
+            
+                if first:
+                    if (currentUI == None):
+                        image = pygame.image.load(getImagePath(classId, indexUI+1))
+                        currentUI = pygame.sprite.Sprite()
+                        currentUI.image = image
+                        currentUI.rect = image.get_rect()
+    
+                        group.add(currentUI)
 
-                if (len(group) == 0):
-                    image = pygame.image.load(getImagePath(classId, indexUI+1))
-                    sprite = pygame.sprite.Sprite()
-                    sprite.image = image
-                    sprite.rect = image.get_rect()
-                    sprite.rect.x = max(0, min(x, screenWidth - sprite.rect.width))
-                    sprite.rect.y = max(0, min(y, screenHeight - sprite.rect.height))
-                    group.add(sprite)
+                    currentUI.rect.x = max(0, min(x, screenWidth - currentUI.rect.width))
+                    currentUI.rect.y = max(0, min(y, screenHeight - currentUI.rect.height))
+                    group.update()
+
+                    lastUIDisplayTime = time.time()
                 else:
-                    cv2.putText(inp, category, (int(x), int(y)), font, 0.5, (255,255,255), 2, cv2.LINE_AA)
+                    cv2.putText(inp, category, (int(x), int(y)), font, 0.5, (255,255,255), 2, cv2.LINE_AA)   
+
+                first = False
                   
 
             screen.fill([0,0,0])
@@ -114,8 +129,10 @@ with tf.Session() as sess:
             inp = pygame.surfarray.make_surface(inp)
 
             screen.blit(inp, (0,0))
-            if (len(group) != 0):
+
+            if (currentUI != None):
                 group.draw(screen)
+
             pygame.display.update()
 
             for event in pygame.event.get():
