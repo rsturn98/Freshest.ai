@@ -34,6 +34,7 @@ indexUI = 0;
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 lastUIDisplayTime = 0
+lastClassId = -1
 currentUI = None
 
  # Load Tensorflow model
@@ -103,13 +104,19 @@ with tf.Session() as sess:
                 cv2.rectangle(inp, (int(x), int(y)), (int(right), int(bottom)), (125, 255, 51), thickness=1)
             
                 if first:
-                    if (currentUI == None):
+                    #change current to the product with the better score
+                    if classId != lastClassId:
+                        group.empty();
+                        currentUI = None
+
+                    if currentUI == None:
                         image = pygame.image.load(getImagePath(classId, indexUI+1))
                         currentUI = pygame.sprite.Sprite()
                         currentUI.image = image
                         currentUI.rect = image.get_rect()
     
                         group.add(currentUI)
+                        lastClassId = classId
 
                     currentUI.rect.x = max(0, min(x, screenWidth - currentUI.rect.width))
                     currentUI.rect.y = max(0, min(y, screenHeight - currentUI.rect.height))
@@ -127,6 +134,7 @@ with tf.Session() as sess:
             inp = np.rot90(inp)
             inp = cv2.flip(inp,0)
             inp = pygame.surfarray.make_surface(inp)
+            inp = pygame.transform.scale(inp, (800, 600))
 
             screen.blit(inp, (0,0))
 
