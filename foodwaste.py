@@ -28,7 +28,7 @@ def getImagePath(classId):
 camera = cv2.VideoCapture(0)
 
 pygame.init()
-pygame.display.set_caption("Ai For Good")
+pygame.display.set_caption("Freshest.AI")
 screen = pygame.display.set_mode([800,600])
 
 with tf.gfile.Open('frozen_inference_graph.pb', 'rb') as f:
@@ -49,7 +49,6 @@ with tf.Session() as sess:
 
             rows = frame.shape[0]
             cols = frame.shape[1]
-          #  print(rows, cols)
 
             inp = cv2.resize(frame, (cols, rows))
 
@@ -66,8 +65,6 @@ with tf.Session() as sess:
             num_detections = int(out[0][0])
             for i in range(num_detections):
 
-               # print(out[3])
-
                 classId = int(out[3][0][i])
                 score = float(out[1][0][i])
                 bbox = [float(v) for v in out[2][0][i]]
@@ -79,16 +76,17 @@ with tf.Session() as sess:
                     bottom = bbox[2] * rows
                     cv2.rectangle(inp, (int(x), int(y)), (int(right), int(bottom)), (125, 255, 51), thickness=1)
 
-                    cv2.putText(inp, category, (int(x), int(y)), font, 1, (255,255,255), 2, cv2.LINE_AA)
-
-                    image = pygame.image.load(getImagePath(classId))
-                    sprite = pygame.sprite.Sprite()
-                    sprite.image = image
-                    sprite.rect = image.get_rect()
-                    sprite.rect.x = x
-                    sprite.rect.y = y
                     if (len(group) == 0):
+                        image = pygame.image.load(getImagePath(classId))
+                        sprite = pygame.sprite.Sprite()
+                        sprite.image = image
+                        sprite.rect = image.get_rect()
+                        sprite.rect.x = x
+                        sprite.rect.y = y
                         group.add(sprite)
+                    else:
+                        cv2.putText(inp, category, (int(x), int(y)), font, 0.5, (255,255,255), 2, cv2.LINE_AA)
+                  
 
             screen.fill([0,0,0])
             inp = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
