@@ -27,9 +27,12 @@ def getImagePath(classId):
 
 camera = cv2.VideoCapture(0)
 
+screenWidth = 800
+screenHeight = 600
+
 pygame.init()
 pygame.display.set_caption("Freshest.AI")
-screen = pygame.display.set_mode([800,600])
+screen = pygame.display.set_mode([screenWidth,screenHeight])
 
 with tf.gfile.Open('frozen_inference_graph.pb', 'rb') as f:
     graph_def = tf.GraphDef()
@@ -52,7 +55,7 @@ with tf.Session() as sess:
 
             inp = cv2.resize(frame, (cols, rows))
 
-              # Run the model
+            # Run TF model
             out = sess.run([sess.graph.get_tensor_by_name('num_detections:0'),
                             sess.graph.get_tensor_by_name('detection_scores:0'),
                             sess.graph.get_tensor_by_name('detection_boxes:0'),
@@ -61,7 +64,7 @@ with tf.Session() as sess:
 
             font = cv2.FONT_HERSHEY_SIMPLEX
 
-            # Visualize detected bounding boxes.
+            # Display bounding box and UI
             num_detections = int(out[0][0])
             for i in range(num_detections):
 
@@ -81,8 +84,8 @@ with tf.Session() as sess:
                         sprite = pygame.sprite.Sprite()
                         sprite.image = image
                         sprite.rect = image.get_rect()
-                        sprite.rect.x = x
-                        sprite.rect.y = y
+                        sprite.rect.x = max(0, min(x, screenWidth - sprite.rect.width))
+                        sprite.rect.y = max(0, min(y, screenHeight - sprite.rect.height))
                         group.add(sprite)
                     else:
                         cv2.putText(inp, category, (int(x), int(y)), font, 0.5, (255,255,255), 2, cv2.LINE_AA)
