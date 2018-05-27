@@ -1,0 +1,26 @@
+<annotation>
+	<folder>avocado</folder>
+	<filename>030.png</filename>
+	<path>/Users/mplantady/Work/ai-for-good/training/images/avocado/030.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>756</width>
+		<height>1008</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>avocado</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>115</xmin>
+			<ymin>194</ymin>
+			<xmax>645</xmax>
+			<ymax>846</ymax>
+		</bndbox>
+	</object>
+</annotation>
