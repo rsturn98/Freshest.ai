@@ -2,7 +2,7 @@
 
 *Orange*
 
- | Counter | Refrigerator
+ -- | Counter | Refrigerator
 --- | --- | ---
 Fresh | 2-3 Days | 1-2 Months
 Cut | Same Day | 1-2 Days
@@ -194,11 +194,13 @@ Fry them up (this will extend the shelf life for another week) and then use them
 
 *Cake*
   
--- | Pantry | Fridge | Freezer
---- | --- | ---
+  
+--- | Pantry | Fridge | Freezer
+--- | --- | --- | ---
 Bakery Cake |	1-2 Days |	2-4 Days |	2-4 Months
 Cake with fresh fruit |	-- |	1-2 Days |	2-4 Months
 Cake with whipped cream |	--	|1-2 Days|	--
+
 
 * How to tell if Cake is bad, rotten or spoiled?
 
