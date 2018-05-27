@@ -140,6 +140,8 @@ with tf.Session() as sess:
                     sys.exit(0)
                 if event.type == pygame.MOUSEBUTTONUP:
                     indexUI = (indexUI + 1) % 4
+                    group.empty();
+                    currentUI = None
 
     except KeyboardInterrupt:
         pygame.quit()
