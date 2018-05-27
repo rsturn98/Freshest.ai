@@ -1,0 +1,17 @@
+{
+    "53": {
+        "name": "Apple",
+        "image": "images/apple_1.png",
+        "image2": "images/apple_2.png"
+    },
+    "52": {
+        "name": "Banana",
+        "image": "images/banana_1.png",
+        "image2": "images/banana_2.png"
+    },
+    "56": {
+        "name": "Broccoli",
+        "image": "images/broccoli_1.png",
+        "image2": "images/broccoli_2.png"
+    }
+}

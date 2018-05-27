@@ -81,7 +81,7 @@ with tf.Session() as sess:
 
                     cv2.putText(inp, category, (int(x), int(y)), font, 1, (255,255,255), 2, cv2.LINE_AA)
 
-                    image = pygame.image.load(getImagePath(classId)))
+                    image = pygame.image.load(getImagePath(classId))
                     sprite = pygame.sprite.Sprite()
                     sprite.image = image
                     sprite.rect = image.get_rect()
